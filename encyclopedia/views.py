@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 import markdown
+import random
 from . import util
 
 
@@ -14,3 +15,8 @@ def entry(request, title):
         "title": title,
         "entry": markdown.markdown(util.get_entry(title))
     })
+
+
+def random_entry(request):
+    title = random.choice(util.list_entries())
+    return redirect(f"/wiki/{title}")
