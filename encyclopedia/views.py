@@ -20,3 +20,16 @@ def entry(request, title):
 def random_entry(request):
     title = random.choice(util.list_entries())
     return redirect(f"/wiki/{title}")
+
+
+def search(request):
+    title = request.POST.get('q')
+    if title in util.list_entries():
+        return redirect(f"/wiki/{title}")
+    else:
+        list_result = [el for el in util.list_entries() if title.lower() in el.lower()]
+        return render(request, "encyclopedia/search.html", {
+            "entries": list_result
+        })
+
+
