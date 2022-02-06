@@ -7,5 +7,5 @@
 {% block body %}
 
     {{ entry | safe }}
-
+    <a href="{% url 'edit-page' title %}" type="button" class="btn btn-outline-secondary">Edit Page</a>
 {% endblock %}

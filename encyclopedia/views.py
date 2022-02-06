@@ -80,3 +80,32 @@ def create_new_page(request):
     return render(request, 'encyclopedia/create_new_page.html', {
         'form': EntryForm()
     })
+
+
+class EditForm(forms.Form):
+    """
+    Form for edit entry
+    """
+    content = forms.CharField(widget=forms.Textarea)
+
+
+def edit_page(request, title):
+    """
+    View function for edit entry
+    """
+    content = util.get_entry(title)
+    if request.method == "POST":
+        form = EditForm(request.POST)
+        if form.is_valid():
+            new_content = form.cleaned_data['content']
+            util.save_entry(title, new_content)
+            return HttpResponseRedirect(reverse('entry', args=[title]))
+        else:
+            return render(request, "encyclopedia/edit_page.html", {
+                "form": form,
+                "title": title
+            })
+    return render(request, 'encyclopedia/edit_page.html', {
+        'title': title,
+        'form': EditForm(initial={'content': content})
+    })
