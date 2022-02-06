@@ -39,7 +39,7 @@ def search(request):
     View function for search form (from sidebar)
     """
     title = request.POST.get('q')
-    if title in util.list_entries():
+    if util.get_entry(title):
         return redirect(f"/wiki/{title}")
     else:
         list_result = [el for el in util.list_entries() if title.lower() in el.lower()]
