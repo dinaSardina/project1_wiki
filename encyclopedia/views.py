@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, reverse
 import markdown
 import random
+from django import forms
+from django.http import HttpResponseRedirect
+from django.core.exceptions import ValidationError
 from . import util
 
 
@@ -43,3 +46,37 @@ def search(request):
         return render(request, "encyclopedia/search.html", {
             "entries": list_result
         })
+
+
+class EntryForm(forms.Form):
+    """
+    Form for create new entry
+    """
+    title = forms.CharField(max_length=100)
+    content = forms.CharField(widget=forms.Textarea)
+
+    def clean_title(self):
+        data = self.cleaned_data.get('title')
+        if util.get_entry(data):
+            raise ValidationError('Invalid title - this title already exist')
+        return data
+
+
+def create_new_page(request):
+    """
+    View function for create new entry
+    """
+    if request.method == "POST":
+        form = EntryForm(request.POST)
+        if form.is_valid():
+            new_title = form.cleaned_data['title']
+            new_content = form.cleaned_data['content']
+            util.save_entry(new_title, new_content)
+            return HttpResponseRedirect(reverse('entry', args=[new_title]))
+        else:
+            return render(request, "encyclopedia/create_new_page.html", {
+                "form": form
+            })
+    return render(request, 'encyclopedia/create_new_page.html', {
+        'form': EntryForm()
+    })
