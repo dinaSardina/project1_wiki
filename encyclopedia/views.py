@@ -1,9 +1,11 @@
-from django.shortcuts import render, redirect, reverse
-import markdown
 import random
+
+import markdown
 from django import forms
-from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render, reverse
+
 from . import util
 
 
