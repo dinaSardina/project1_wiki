@@ -1,5 +1,2 @@
-## CS50 Web Project 1: Wiki
-### (CS50's Web Programming with Python and JavaScript)
-
-Design a Wikipedia-like online encyclopedia using Django framework.
-
+Homework project for CS50's Web Programming with Python and JavaScript
+https://cs50.harvard.edu/web/2020/projects/1/
